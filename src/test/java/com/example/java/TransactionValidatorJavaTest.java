@@ -67,4 +67,24 @@ class TransactionValidatorJavaTest {
         assertTrue(result.isFailure());
         assertEquals("amount must be greater than 0", result.getError());
     }
+
+    @Test
+    void shouldAcceptBlankStatusAsLongAsOptionalIsPresent() {
+        Transaction transaction = new Transaction("txn-7", 100.0, Optional.of(""));
+
+        Result<Transaction> result = TransactionValidator.validate(transaction);
+
+        assertTrue(result.isSuccess());
+        assertEquals(transaction, result.getValue());
+    }
+
+    @Test
+    void shouldAcceptWhitespaceStatusAsLongAsOptionalIsPresent() {
+        Transaction transaction = new Transaction("txn-8", 100.0, Optional.of("   "));
+
+        Result<Transaction> result = TransactionValidator.validate(transaction);
+
+        assertTrue(result.isSuccess());
+        assertEquals(transaction, result.getValue());
+    }
 }
